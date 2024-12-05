@@ -2,6 +2,8 @@
 
 **Project:** Surveillance Analysis and Sample Size Explorer (SASSE)
 
+**Shiny App:** https://deerdisease.shinyapps.io/Wildlife-surveillance-design-tools/
+
 ## Training materials and documentation
 
 - Slides, app, and technical documentation from TWS workshop 2024
