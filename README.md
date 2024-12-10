@@ -3,7 +3,7 @@
 **Project:** Surveillance Analysis and Sample Size Explorer (SASSE)
 
 **Shiny App:** https://deerdisease.shinyapps.io/Wildlife-surveillance-design-tools/
-* *note: If you are experiencing slow speeds it is because the Shiny subscription for hosting this application has been downgraded as it is being converted to a downloadable version for running locally. Local version will be uploaded to this page in the next month.* *
+*note: If you are experiencing slow speeds it is because the Shiny subscription for hosting this application has been downgraded as it is being converted to a downloadable version for running locally. Local version will be uploaded to this page in the next month.*
 
 ## Training materials and documentation
 
