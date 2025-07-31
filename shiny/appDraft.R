@@ -117,12 +117,13 @@ ui <- fluidPage(shinyjs::useShinyjs(),
                                                   br(),
                                                   h5("Expected Presence"),
                                                   sliderInput("presence_prob", label = "How probable do you think it is that disease is present?", min=0, max=1, value = 0.5),
-                                                  h5("Ecological Groups"),
+                                                  br(),
+                                                  h5("Sampling Strata"),
                                                   h6("(e.g., sex, age class, surveillance method)"),
                                                   uiOutput("addInputs"),
                                                   #uiOutput("addInputs2"),
-                                                  fluidRow(column(width = 3, actionButton(inputId = "add", label = "Add group")),
-                                                           column(width = 3, actionButton(inputId = "rmv", label = "Remove group")))),
+                                                  fluidRow(column(width = 3, actionButton(inputId = "add", label = "Add stratum")),
+                                                           column(width = 3, actionButton(inputId = "rmv", label = "Remove stratum")))),
                                              
                                              card(card_header("Observation Process"),
                                                   img(src = "trueEco.png", style = "display: block; margin-left: auto; margin-right: auto;"),
@@ -195,7 +196,7 @@ ui <- fluidPage(shinyjs::useShinyjs(),
                           h4("Inputs"),
                           card(
                             fluidRow(
-                              column(width = 6, radioButtons("prevPrior", label = "What range of prevalence is possible for this ecological group?", choices = list("0%-100% (I'm not sure)" = 1,
+                              column(width = 6, radioButtons("prevPrior", label = "What range of prevalence is possible for this sampling stratum?", choices = list("0%-100% (I'm not sure)" = 1,
                                                                                                                                                                     "0%-30%"=2,
                                                                                                                                                                     "10%-40%"=3,
                                                                                                                                                                     "20%-50%"=4,
@@ -238,11 +239,12 @@ ui <- fluidPage(shinyjs::useShinyjs(),
                                                   br(),
                                                   h5("Expected Presence"),
                                                   sliderInput("presence_prob_prev", label = "How probable do you think it is that disease is present?", min=0, max=1, value = 0.5),
-                                                  h5("Ecological Groups"),
+                                                  br(),
+                                                  h5("Sampling Strata"),
                                                   h6("(e.g., sex, age class, surveillance method)"),
                                                   uiOutput("addInputs_prev"),
-                                                  fluidRow(column(width = 3, actionButton(inputId = "add_prev", label = "Add group")),
-                                                           column(width = 3, actionButton(inputId = "rmv_prev", label = "Remove group")))),
+                                                  fluidRow(column(width = 3, actionButton(inputId = "add_prev", label = "Add stratum")),
+                                                           column(width = 3, actionButton(inputId = "rmv_prev", label = "Remove stratum")))),
                                              
                                              card(card_header("Observation Process"),
                                                   img(src = "trueEco.png", style = "display: block; margin-left: auto; margin-right: auto;"),
@@ -294,7 +296,7 @@ ui <- fluidPage(shinyjs::useShinyjs(),
                           h4("Inputs"),
                           card(
                             fluidRow(
-                              column(width = 6, radioButtons("prevPrior_p", label = "What range of prevalence is possible for this ecological group?", choices = list("0%-100% (I'm not sure)" = 1,
+                              column(width = 6, radioButtons("prevPrior_p", label = "What range of prevalence is possible for this sampling stratum?", choices = list("0%-100% (I'm not sure)" = 1,
                                                                                                                                                                       "0%-30%"=2,
                                                                                                                                                                       "10%-40%"=3,
                                                                                                                                                                       "20%-50%"=4,
@@ -728,9 +730,9 @@ server <- function(input, output, session) {
     n <- popRow$n
     selectInputs <- lapply(1:n, function(i) {
       fluidRow(
-        column(width = 6, textInput(paste0("name",i), label = "What is the name of the ecological group?", value = paste0("Group ", i))),
+        column(width = 6, textInput(paste0("name",i), label = "What is the name of the sampling stratum?", value = paste0("Stratum ", i))),
         #column(width = 6, textInput(paste0("name_test",i), label = "What is the name of the surveillance method?", value = paste0("Method ", i))))
-        column(width = 6, sliderInput(paste0("groupPrev",i), "What range of prevalence is possible for this group?", min = 0, max = 1, value = c(0, 0.5))))
+        column(width = 6, sliderInput(paste0("groupPrev",i), "What range of prevalence is possible for this sampling stratum?", min = 0, max = 1, value = c(0, 0.5))))
     })
     do.call(tagList, selectInputs)
   })
@@ -872,7 +874,7 @@ server <- function(input, output, session) {
       style = rounded
       bgcolor = '#3EA055'
       
-      label = 'Ecological Group'
+      label = 'Sampling Strata'
       node[shape = rectangle, fillcolor = '#DBF9DB', margin = 0.25]
       ",subs3,"
     }
@@ -1052,7 +1054,7 @@ server <- function(input, output, session) {
       
       future_promise({
         
-        source(file.path('run_nimble.R'))
+        source(file.path('utils','run_nimble.R'))
         source(file.path('utils','beta_params.R'))
         library(dplyr)
         
@@ -1539,8 +1541,8 @@ server <- function(input, output, session) {
     n <- popRow_prev$n
     selectInputs <- lapply(1:n, function(i) {
       fluidRow(
-        column(width = 6, textInput(paste0("name_prev",i), label = "What is the name of the ecological group?", value = paste0("Group ", i))),
-        column(width = 6, sliderInput(paste0("groupPrev_prev",i), "What range of prevalence is possible for this group?", min = 0, max = 1, value = c(0, 0.5))))
+        column(width = 6, textInput(paste0("name_prev",i), label = "What is the name of the sampling stratum?", value = paste0("Stratum ", i))),
+        column(width = 6, sliderInput(paste0("groupPrev_prev",i), "What range of prevalence is possible for this sampling stratum?", min = 0, max = 1, value = c(0, 0.5))))
     })
     do.call(tagList, selectInputs)
   })
@@ -1680,7 +1682,7 @@ server <- function(input, output, session) {
       style = rounded
       bgcolor = '#3EA055'
       
-      label = 'Ecological Groups'
+      label = 'Sampling Strata'
       node[shape = rectangle, fillcolor = '#DBF9DB', margin = 0.25]
       ",subs3,"
     }
@@ -1873,7 +1875,7 @@ server <- function(input, output, session) {
       
       future_promise({
         
-        source(file.path('run_nimble.R'))
+        source(file.path('utils','run_nimble.R'))
         source(file.path('utils','beta_params.R'))
         library(dplyr)
         

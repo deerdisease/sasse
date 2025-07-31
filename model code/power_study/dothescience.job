@@ -1,0 +1,14 @@
+#!/bin/sh
+
+#SBATCH --job-name df_power
+#SBATCH --partition cpu_compute
+#SBATCH --mail-type ALL
+#SBATCH --ntasks 1
+#SBATCH --array=1-1000
+
+module load R
+
+date
+R CMD BATCH --no-save --no-restore Rscripts/power_study/evaluate_scenarios.R ${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID}.Rout
+END=`date +%s`
+date
